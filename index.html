@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bhoomi Measure App</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#e8f5e9;
+color:#222;
+}
+
+
+header{
+background:#2e7d32;
+color:white;
+padding:15px;
+text-align:center;
+font-size:26px;
+font-weight:bold;
+}
+
+
+.container{
+width:100%;
+max-width:700px;
+margin:auto;
+padding:15px;
+}
+
+
+.card{
+background:white;
+padding:18px;
+margin-bottom:15px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+
+h2,h3{
+color:#2e7d32;
+margin-bottom:10px;
+}
+
+
+label{
+display:block;
+font-weight:bold;
+margin-top:12px;
+color:#2e7d32;
+}
+
+
+input,select{
+
+width:100%;
+padding:13px;
+margin-top:6px;
+border-radius:8px;
+border:1px solid #999;
+font-size:16px;
+
+}
+
+
+
+button{
+
+width:100%;
+padding:13px;
+margin-top:12px;
+background:#2e7d32;
+color:white;
+border:none;
+border-radius:8px;
+font-size:17px;
+cursor:pointer;
+
+}
+
+
+button:hover{
+
+background:#1b5e20;
+
+}
+
+
+.result{
+
+background:#fff3e0;
+padding:15px;
+margin-top:15px;
+border-radius:10px;
+line-height:28px;
+font-size:16px;
+
+}
+
+
+.record{
+
+background:#f1f8e9;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+line-height:25px;
+
+}
+
+
+
+/* Dark Mode */
+
+.dark{
+background:#111;
+color:white;
+}
+
+
+.dark header{
+background:#000;
+}
+
+
+.dark .card{
+background:#222;
+color:white;
+}
+
+
+.dark h2,
+.dark h3,
+.dark label{
+color:white;
+}
+
+
+.dark input,
+.dark select{
+
+background:#333;
+color:white;
+
+}
+
+
+.dark .result{
+
+background:#333;
+color:white;
+
+}
+
+
+.dark .record{
+
+background:#333;
+color:white;
+
+}
+
+
+
+/* Mobile Responsive */
+
+@media(max-width:600px){
+
+header{
+font-size:20px;
+}
+
+.container{
+padding:10px;
+}
+
+.card{
+padding:14px;
+}
+
+input,select,button{
+font-size:15px;
+}
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+🌾 Bhoomi Measure App
+</header>
+
+
+
+<div class="container">
+
+
+<div class="card">
+
+
+<h2>📐 Bhoomi Naap</h2>
+
+
+<select id="unit">
+
+<option value="feet">
+Feet me Bhoomi Naape
+</option>
+
+<option value="meter">
+Meter me Bhoomi Naape
+</option>
+
+</select>
+
+
+
+<h3>🧭 Direction Wise Value</h3>
+
+
+<label>East (पूरब)</label>
+<input type="number" id="east">
+
+
+<label>West (पश्चिम)</label>
+<input type="number" id="west">
+
+
+<label>North (उत्तर)</label>
+<input type="number" id="north">
+
+
+<label>South (दक्षिण)</label>
+<input type="number" id="south">
+
+
+
+<button onclick="calculate()">
+📏 Calculate
+</button>
+
+
+
+<div class="result" id="result">
+Result yaha dikhega
+</div>
+
+
+
+<button onclick="saveResult()">
+💾 Save Result
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h2>📂 History</h2>
+
+<div id="history"></div>
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h2>⚙ Setting</h2>
+
+
+<button onclick="darkMode()">
+🌙 Dark Mode
+</button>
+
+
+<button onclick="deleteHistory()">
+🗑 Delete History
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+let lastResult="";
+
+
+
+// Calculate Function
+
+function calculate(){
+
+
+let east=Number(document.getElementById("east").value);
+
+let west=Number(document.getElementById("west").value);
+
+let north=Number(document.getElementById("north").value);
+
+let south=Number(document.getElementById("south").value);
+
+
+let unit=document.getElementById("unit").value;
+
+
+
+if(!east || !west || !north || !south){
+
+alert("Sabhi direction ki value dale");
+
+return;
+
+}
+
+
+
+let avgLength=(east+west)/2;
+
+let avgWidth=(north+south)/2;
+
+
+let area=avgLength*avgWidth;
+
+
+let sqft=0;
+
+let sqm=0;
+
+let bigha=0;
+
+
+
+if(unit=="feet"){
+
+sqft=area;
+
+sqm=sqft/10.764;
+
+bigha=sqft/6808;
+
+}
+
+else{
+
+sqm=area;
+
+sqft=sqm*10.764;
+
+bigha=sqm/632;
+
+}
+
+
+
+lastResult=`
+
+East : ${east}
+
+West : ${west}
+
+North : ${north}
+
+South : ${south}
+
+
+Average Length : ${avgLength.toFixed(2)}
+
+Average Width : ${avgWidth.toFixed(2)}
+
+
+Square Feet : ${sqft.toFixed(2)} ft²
+
+Square Meter : ${sqm.toFixed(2)} m²
+
+Bigha : ${bigha.toFixed(4)}
+
+`;
+
+
+
+document.getElementById("result").innerHTML=
+
+`
+<b>🧭 Result</b>
+<br><br>
+${lastResult.replace(/\n/g,"<br>")}
+
+`;
+
+}
+
+
+
+
+// Save History with Date Time
+
+function saveResult(){
+
+
+if(lastResult==""){
+
+alert("Pehle calculation kare");
+
+return;
+
+}
+
+
+
+let now=new Date();
+
+
+let date=
+
+now.toLocaleDateString("hi-IN");
+
+
+let time=
+
+now.toLocaleTimeString("hi-IN");
+
+
+
+let finalData=
+
+`
+📅 Date : ${date}
+
+⏰ Time : ${time}
+
+
+${lastResult}
+
+`;
+
+
+
+let old=
+
+JSON.parse(localStorage.getItem("bhoomi")) || [];
+
+
+
+old.push(finalData);
+
+
+
+localStorage.setItem(
+"bhoomi",
+JSON.stringify(old)
+);
+
+
+
+showHistory();
+
+
+alert("History Save Ho Gayi");
+
+
+}
+
+
+
+
+// Show History
+
+function showHistory(){
+
+
+let data=
+
+JSON.parse(localStorage.getItem("bhoomi")) || [];
+
+
+
+let html="";
+
+
+
+data.forEach((item,index)=>{
+
+
+html+=`
+
+<div class="record">
+
+<b>${index+1}</b><br>
+
+${item.replace(/\n/g,"<br>")}
+
+</div>
+
+`;
+
+});
+
+
+document.getElementById("history").innerHTML=html;
+
+
+}
+
+
+
+
+
+function deleteHistory(){
+
+localStorage.removeItem("bhoomi");
+
+showHistory();
+
+}
+
+
+
+
+function darkMode(){
+
+document.body.classList.toggle("dark");
+
+}
+
+
+
+
+showHistory();
+
+
+</script>
+
+
+</body>
+</html>
